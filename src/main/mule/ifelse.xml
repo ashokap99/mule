@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="ifelseFlow" doc:id="af34c6be-f3b4-45c5-bc69-88a1fc3a896e" >
+		<http:listener doc:name="Listener" doc:id="109a8d0f-e4c4-484d-8f1a-ee6fb3654e1b" config-ref="HTTP_Listener_config" path="/ifelse"/>
+		<ee:transform doc:name="Transform Message" doc:id="c8febfb6-c5b6-4c90-aa4f-291b458fe930" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+var a = "logger"
+var s = "setpayload"
+var h= "request"
+var o = "transformessage"
+var k = "listener"
+var p = "copy"
+var A = "delete"
+var t = "move"
+var T = "read"
+var u = "write"
+---
+if(a=="logger")
+{
+	"logger" : "messenger",
+	"copy" : p,
+	"remove" : A,
+	"payload": s
+}else
+{
+	"ashok" : "patthu"
+}
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>

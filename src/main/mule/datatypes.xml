@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="049a3369-6fe0-4a98-943c-eeca029c1361" >
+		<http:request-connection protocol="HTTPS" host="catfact.ninja" />
+	</http:request-config>
+	<flow name="datatypesFlow" doc:id="57349296-3da2-4dfa-960b-eab976dabdca" >
+		<http:listener doc:name="Listener" doc:id="8b9a519a-1457-44f6-87c6-227bee663b82" config-ref="HTTP_Listener_config" path="/datatypes"/>
+		<set-variable value="#[attributes.queryParams.lenght]" doc:name="Set Variable" doc:id="fd216135-b73d-41b4-911a-e5fc0271f630" variableName="len"/>
+		<http:request method="GET" doc:name="Request" doc:id="bc89459e-f1ad-4234-ae1e-2aea97c73416" config-ref="HTTP_Request_configuration" path="/fact"/>
+		<ee:transform doc:name="Transform Message" doc:id="45fc8064-739d-4290-85b1-71de705183e7" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	fact: payload.fact,
+    length: payload.length
+    }
+    ]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="ac3aa9cf-6015-4265-ab59-b95832521f5c" message="#[payload]"/>
+	</flow>
+	<flow name="datatypesFlow1" doc:id="42303f60-ca13-45ac-ab3a-7371ca1a82ea" >
+		<http:listener doc:name="Listener" doc:id="61628b4e-64ee-4619-9cdd-8186ec76eeb4" config-ref="HTTP_Listener_config" path="/datatype"/>
+		<ee:transform doc:name="Transform Message" doc:id="c4315568-cd39-466b-a0a3-06da3b290fe7" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+var num1 = 10
+var num2 = 8
+var firstname = "virat"
+var lastname = "kohli"
+var namedarray = ["kohli","glenn","faf"]
+var playerlist =
+{
+	players:
+ [	
+	{
+		"j.num" : 18,
+		"name"  : "virat",
+		"team"  : "rcb"
+	},
+	{
+		"j.num" : 21,
+		"name"  : "dk",
+		"team"  : "rcb"
+	}
+	
+	]
+}
+---
+{
+	arthimaticoperators:
+	{
+		"addition" :  num1+num2,
+		"sub"       : num1-num2
+	},
+	concatenation :
+	{
+		name : firstname ++ " " ++ lastname 
+	},
+	arrayinsidedata:
+	{
+		array: namedarray[0]
+	},
+	listofplayers:
+	{
+		player:  playerlist.players."name"
+	}
+}
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>

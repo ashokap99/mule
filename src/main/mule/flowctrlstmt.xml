@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:file="http://www.mulesoft.org/schema/mule/file" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd">
+	<file:config name="File_Config1" doc:name="File Config" doc:id="f188bfe6-1c30-44c3-b514-aa19788c95b4" />
+	<flow name="flowctrlstmtFlow" doc:id="77007445-b85d-4c7b-b308-fbfe6ae781e6" >
+		<http:listener doc:name="Listener" doc:id="9719fab2-f4d5-42ee-8ca1-704018662402" config-ref="HTTP_Listener_config" path="/flowctrl"/>
+		<ee:transform doc:name="Transform Message" doc:id="ab77d3e6-1ebd-4b34-817f-1fd0747a731d">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+var cinema =
+
+{
+    "movies" :
+    [
+        
+        {
+            "name" : "bahubali",
+            "hero" : "prabhas",
+            "team" : 
+            {
+                "director" : "rajamouli",
+                "music"   : "keeravani",
+                "producer" :  "sobhu",
+                "banner"   : "arka media"
+            }
+        },
+         
+        {
+            "name" : "saho",
+            "hero" : "prabhas",
+            "team" : 
+            {
+                "director" : "sujith",
+                "music"   : "gibran",
+                "producer" :  "vamsi",
+                "banner"   : "UVcreations"
+            }
+        },
+         
+        {
+            "name" : "radhashyam",
+            "hero" : "prabhas",
+            "team" : 
+            {
+                "director" : "radhakrishna",
+                "music"   : "jusin",
+                "producer" :  "vamsi",
+                "banner"   : "UVcreations"
+            }
+        }
+    ]
+
+  
+}
+---
+{
+	details: cinema.movies.name,
+	team : cinema.movies.team
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<set-payload value='#[payload.team + "ashok" : "patthu"]' doc:name="Set Payload" doc:id="979afb1a-79a6-4733-b020-c728736c3146" />
+		<file:write doc:name="Write" doc:id="c967dd6a-42f0-463c-9bc2-9a87b65eaaf7" config-ref="File_Config1" path="D:\ashokjava\ap\write.txt">
+			<file:content ><![CDATA[#[payload.ashok + "pattu" : "ashok"]]]></file:content>
+		</file:write>
+		<set-payload value='#[payload.banner + "app roductions" + "asp productions"]' doc:name="Set Payload" doc:id="d19a6a50-7fe7-4f25-b474-1119985d205e" />
+		<logger level="INFO" doc:name="Logger" doc:id="1ce26efc-45f3-496f-8814-eb1cd48c10a0" message="#[payload]"/>
+	</flow>
+</mule>

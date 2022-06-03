@@ -1,0 +1,27 @@
+
+{
+    "employeedetils": {
+        "employee1": {
+            "name": "ashok",
+            "lastname": "rachapudi",
+            "report": "thirisha"
+        },
+        "employee2": {
+            "name": "siva",
+            "lastname": "kundurthi",
+            "reporting": "thirisha"
+        },
+        "employee3": {
+            "name": "supriya",
+            "lastname": "kuppala",
+            "report": " vamsi"
+        },
+        "employee4": {
+            "name": "sai",
+            "lastname": "veenapu",
+            "report": " vamsi"
+        }
+    }
+}
+
+   

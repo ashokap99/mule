@@ -1,0 +1,84 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<types:mule xmlns:types="http://www.mulesoft.org/schema/mule/types">
+  <types:catalog>
+    <types:type name="jsondata" format="json">
+      <types:shape format="weave" example="examples/pdetils.json"><![CDATA[%dw 2.0
+
+type jsondata = {|
+  employeedetils: {|
+    employee1: {|
+      name: String, 
+      lastname: String, 
+      report: String
+    |}, 
+    employee2: {|
+      name: String, 
+      lastname: String, 
+      reporting: String
+    |}, 
+    employee3: {|
+      name: String, 
+      lastname: String, 
+      report: String
+    |}, 
+    employee4: {|
+      name: String, 
+      lastname: String, 
+      report: String
+    |}
+  |}
+|} {"example": "{\\\"employeedetils\\\":{\\\"employee1\\\":{\\\"name\\\":\\\"ashok\\\",\\\"lastname\\\":\\\"rachapudi\\\",\\\"report\\\":\\\"thirisha\\\"},\\\"employee2\\\":{\\\"name\\\":\\\"siva\\\",\\\"lastname\\\":\\\"kundurthi\\\",\\\"reporting\\\":\\\"thirisha\\\"},\\\"employee3\\\":{\\\"name\\\":\\\"supriya\\\",\\\"lastname\\\":\\\"kuppala\\\",\\\"report\\\":\\\" vamsi\\\"},\\\"employee4\\\":{\\\"name\\\":\\\"sai\\\",\\\"lastname\\\":\\\"veenapu\\\",\\\"report\\\":\\\" vamsi\\\"}}}"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="exceldata" format="excel">
+      <types:shape format="weave"><![CDATA[%dw 2.0
+
+type exceldata = {|
+  frnds?: Array<{|    name: String,     age: Number,     gender: String,     designation: String,     location: String  |}>
+|}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="textfile" format="java">
+      <types:shape format="raml"><![CDATA[#%RAML 1.0 DataType
+type: string]]></types:shape>
+    </types:type>
+    <types:type name="movies" format="json">
+      <types:shape format="weave" example="examples/movies.json"><![CDATA[%dw 2.0
+
+type movies = {|
+  movies: Array<{|    name: String,     hero: String,     team: {|      director: String,       music: String,       producer: String,       banner: String    |}  |}>
+|} {"example": "{\\\"movies\\\":[{\\\"name\\\":\\\"bahubali\\\",\\\"hero\\\":\\\"prabhas\\\",\\\"team\\\":{\\\"director\\\":\\\"rajamouli\\\",\\\"music\\\":\\\"keeravani\\\",\\\"producer\\\":\\\"sobhu\\\",\\\"banner\\\":\\\"arka media\\\"}},{\\\"name\\\":\\\"saho\\\",\\\"hero\\\":\\\"prabhas\\\",\\\"team\\\":{\\\"director\\\":\\\"sujith\\\",\\\"music\\\":\\\"gibran\\\",\\\"producer\\\":\\\"vamsi\\\",\\\"banner\\\":\\\"UVcreations\\\"}},{\\\"name\\\":\\\"radhashyam\\\",\\\"hero\\\":\\\"prabhas\\\",\\\"team\\\":{\\\"director\\\":\\\"radhakrishna\\\",\\\"music\\\":\\\"jusin\\\",\\\"producer\\\":\\\"vamsi\\\",\\\"banner\\\":\\\"UVcreations\\\"}}]}"}
+
+]]></types:shape>
+    </types:type>
+  </types:catalog>
+  <types:enrichment select="#b50b635f-33e4-45a5-92a5-3b55e9fbfe6b">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="exceldata"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#80c2f63f-1ac5-405e-8812-04332e4236a6">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="movies"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#bb7d7307-a0ec-4cf2-a00b-428e5f96c3d5">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="jsondata"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+</types:mule>

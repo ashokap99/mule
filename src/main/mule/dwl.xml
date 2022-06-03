@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:file="http://www.mulesoft.org/schema/mule/file" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="e1adc5ee-a54e-421e-95c0-a545f4e5ca92" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<file:config name="File_Config" doc:name="File Config" doc:id="a382df22-bd41-4535-805b-70f9bb2da1f9" />
+	<flow name="dwlFlow" doc:id="8f47934d-6a04-43c5-a918-2934045ad90f" >
+		<http:listener doc:name="Listener" doc:id="8fdd9580-f35f-4019-a63e-439b954138fd" config-ref="HTTP_Listener_config" path="/dwl"/>
+		<ee:transform doc:name="Transform Message" doc:id="b582d350-dabf-45b4-9792-5451040e5f6c" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+now() as String {format: "hh:m:s"}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<set-payload value='#[payload  +|PT2H13M9S|]' doc:name="Set Payload" doc:id="5a1815e4-f9a8-425c-ab7d-8f51ffa8972c" />
+		<logger level="INFO" doc:name="Logger" doc:id="6422e7d6-9f94-4a41-a883-cf3f1467a798" message="#[payload]"/>
+	</flow>
+	<flow name="dwlFlow1" doc:id="4eccd201-023f-4a56-ae38-1a6252173274" >
+		<ee:transform doc:name="Transform Message" doc:id="b50b635f-33e4-45a5-92a5-3b55e9fbfe6b" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/xml
+---
+{
+	frnds:
+	{
+		name: payload.frnds.name,
+		age: payload.frnds.age
+	}
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>

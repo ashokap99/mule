@@ -1,0 +1,42 @@
+{
+    "movies" :
+    [
+        
+        {
+            "name" : "bahubali",
+            "hero" : "prabhas",
+            "team" : 
+            {
+                "director" : "rajamouli",
+                "music"   : "keeravani",
+                "producer" :  "sobhu",
+                "banner"   : "arka media"
+            }
+        },
+         
+        {
+            "name" : "saho",
+            "hero" : "prabhas",
+            "team" : 
+            {
+                "director" : "sujith",
+                "music"   : "gibran",
+                "producer" :  "vamsi",
+                "banner"   : "UVcreations"
+            }
+        },
+         
+        {
+            "name" : "radhashyam",
+            "hero" : "prabhas",
+            "team" : 
+            {
+                "director" : "radhakrishna",
+                "music"   : "jusin",
+                "producer" :  "vamsi",
+                "banner"   : "UVcreations"
+            }
+        }
+    ]
+
+  }

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="mapfilterFlow" doc:id="daffebf3-6a24-434c-bfb2-223d319b63b6" >
+		<http:listener doc:name="Listener" doc:id="746460af-12c9-4fa8-a275-2a5fef08274b" config-ref="HTTP_Listener_config" path="mapfilter"/>
+		<set-variable value="#[attributes.queryParams.director]" doc:name="Set Variable" doc:id="fc6404f2-4f2c-46d7-83fe-d4c6cba77b8c" variableName="param"/>
+		<ee:transform doc:name="Transform Message" doc:id="80c2f63f-1ac5-405e-8812-04332e4236a6" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+
+---
+
+//cinema.movies map ((item,index) -> "name": item.name)
+//cinema.movies filter ((item,index) -> item.name == "bahubali")
+// cinema.movies filter ($.name == "saho")
+payload.movies map ($.team.director)]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<set-payload value='#[payload + ["ashok","patthu"]]' doc:name="Set Payload" doc:id="77e490f9-839b-423e-ac49-4f6eb9261a20" />
+		<logger level="INFO" doc:name="Logger" doc:id="b6eef7e9-23c7-41bf-b5cc-cf5d9221893a" message="#[payload]"/>
+	</flow>
+</mule>

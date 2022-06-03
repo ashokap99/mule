@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="datesFlow" doc:id="3cf33a18-9160-4034-943d-f82a30a8470b" >
+		<http:listener doc:name="Listener" doc:id="f840a93d-33d0-4ba2-b0ea-534147c911ca" config-ref="HTTP_Listener_config" path="/dates"/>
+		<ee:transform doc:name="Transform Message" doc:id="f110b767-ccd5-415d-a015-85cb4be717ac" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+"today" : now() as Date {format: "yyyy-MMM-dd"},
+"tomorrow" :  "2022-05-25" + |P2D|,
+"current time" : now() as Time {format: "HH:mm:ss:SSS"},
+currentdatetinme: now() as LocalDateTime {format:"yyy-MM-dd HH:mm:ss"},
+UTC: ((now() >> "UTC" ) >> "IST") as DateTime {format: "yyy-MM-dd HH:mm:ss"},
+IST : now() >> "IST",
+EST : (now() >>  "EST" ) as DateTime {format: "yyy-MM-dd HH:mm:ss"},
+lossengles: (now() >> "America/Los_Angeles" ) as DateTime {format: "yyy-MM-dd hh:mm:ss :a"}
+
+}
+]]></ee:set-payload>
+			</ee:message>
+			<ee:variables >
+			</ee:variables>
+		</ee:transform>
+	</flow>
+</mule>
